@@ -109,17 +109,14 @@ def gradio_answer(chatbot, chat_state, img_list, num_beams, temperature):
     chatbot[-1][1] = llm_message
     return chatbot, chat_state, img_list
 
-title = """<h1 align="center">Demo of MiniGPT-4</h1>"""
-description = """<h3>This is the demo of MiniGPT-4. Upload your images and start chatting!</h3>"""
-article = """<p><a href='https://minigpt-4.github.io'><img src='https://img.shields.io/badge/Project-Page-Green'></a></p><p><a href='https://github.com/Vision-CAIR/MiniGPT-4'><img src='https://img.shields.io/badge/Github-Code-blue'></a></p><p><a href='https://raw.githubusercontent.com/Vision-CAIR/MiniGPT-4/main/MiniGPT_4.pdf'><img src='https://img.shields.io/badge/Paper-PDF-red'></a></p>
-"""
+title = """<h1 align="center">Demo of XrayChat</h1>"""
+description = """<h3>This is the demo of XrayChat. Upload your X-ray images and start chatting!</h3>"""
 
 #TODO show examples below
 
 with gr.Blocks() as demo:
     gr.Markdown(title)
     gr.Markdown(description)
-    gr.Markdown(article)
 
     with gr.Row():
         with gr.Column(scale=0.5):
@@ -148,7 +145,7 @@ with gr.Blocks() as demo:
         with gr.Column():
             chat_state = gr.State()
             img_list = gr.State()
-            chatbot = gr.Chatbot(label='MiniGPT-4')
+            chatbot = gr.Chatbot(label='XrayChat')
             text_input = gr.Textbox(label='User', placeholder='Please upload your image first', interactive=False)
     
     upload_button.click(upload_img, [image, text_input, chat_state], [image, text_input, upload_button, chat_state, img_list])
