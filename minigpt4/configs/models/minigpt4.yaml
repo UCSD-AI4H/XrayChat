@@ -13,7 +13,7 @@ model:
   num_query_token: 32
 
   # Vicuna
-  llama_model: "/home/h5guo/shared/Mini-GPT4/vicuna_weights"
+  llama_model: "/data1/youwei/data/vicuna_weights"
 
   # generation configs
   prompt: ""
