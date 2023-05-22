@@ -4,7 +4,7 @@ This repository holds the code and data of XrayChat: Towards Enabling ChatGPT-Li
 
 ## Technical report will be available soon. 
 
-## Examples
+!## Examples
 
 ![demo1](figs/examples/demo.png) 
 
