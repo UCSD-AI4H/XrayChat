@@ -1,8 +1,8 @@
-# DrugChat: Towards Enabling ChatGPT-Like Capabilities on Drug Molecule Graphs
+# XrayChat: Towards Enabling ChatGPT-Like Capabilities on Chest X-ray Images
 
-This repository holds the code and data of DrugChat: Towards Enabling ChatGPT-Like Capabilities on Drug Molecule Graphs.
+This repository holds the code and data of XrayChat: Towards Enabling ChatGPT-Like Capabilities on Chest X-ray Images.
 
-## Technical report is available [here](drugchat.pdf) 
+## Technical report will be available soon. 
 
 ## Examples
 
@@ -10,17 +10,17 @@ This repository holds the code and data of DrugChat: Towards Enabling ChatGPT-Li
 
 
 ## Introduction
-- In this work, we make an initial attempt towards enabling ChatGPT-like capabilities on drug molecule graphs, by developing a prototype system DrugChat.
-- DrugChat works in a similar way as ChatGPT. Users upload a compound molecule graph and ask various questions about this compound. DrugChat will answer these questions in a multi-turn, interactive manner. 
-- The DrugChat system consists of a graph neural network (GNN), a large language model (LLM), and an adaptor. The GNN takes a compound molecule graph as input and learns a representation for this graph. The adaptor transforms the graph representation produced by the GNN  into another  representation that is acceptable to the  LLM. The LLM takes the compound representation transformed by the adaptor and users' questions about this compound as inputs and generates answers. All these components are trained end-to-end.
-- To train DrugChat, we collected   instruction tuning datasets which contain 10,834 drug compounds and 143,517 question-answer pairs.
+- In this work, we make an initial attempt towards enabling ChatGPT-like capabilities on chest X-ray images, by developing a prototype system XrayChat.
+- XrayChat works in a similar way as ChatGPT. Users upload a chest X-ray image and ask various questions about this X-ray. XrayChat will answer these questions in a multi-turn, interactive manner. 
+- The XrayChat system consists of an X-ray encoder, a large language model (LLM), and an adaptor. The X-ray encoder takes a chest X-ray image as input and learns a representation for this X-ray. The adaptor transforms the X-ray representation produced by the X-ray encoder  into another  representation that is acceptable to the  LLM. The LLM takes the  representation transformed by the adaptor and users' questions about this X-ray as inputs and generates answers. All these components are trained end-to-end.
+- To train XrayChat, we collected   instruction tuning datasets which contain about 400K chest X-ray images and instructions, from [Open-i](https://openi.nlm.nih.gov/faq#collection) and [MIMIC CXR](https://physionet.org/content/mimic-cxr/2.0.0/)
 
 
 ![overview](figs/DrugChat.png)
 
 ## Datasets
 
-The file `data/ChEMBL_QA.json` and `data/PubChem_QA.json` contains data for the ChEMBL Drug Instruction Tuning Dataset and the PubChem Drug Instruction Tuning Dataset. The data structure is as follows. 
+The file `data/ChEMBL_QA.json` and `data/PubChem_QA.json` contains data for the Open-i Instruction Tuning Dataset. The data structure is as follows. 
 
 {SMILES String: [ [Question1 , Answer1], [Question2 , Answer2]... ] }
 
@@ -106,17 +106,17 @@ BSD 3-Clause License [here](LICENSE_Lavis.md).
 
 ## Disclaimer
 
-This is a prototype system that has not been systematically and comprehensively validated by pharmaceutical experts yet. Please use with caution. 
+This is a prototype system that has not been systematically and comprehensively validated by radiologists yet. Please use with caution. 
 
-Trained models and demo websites will be released after we thoroughly validate the system with pharmaceutical experts.
+Trained models and demo websites will be released after we thoroughly validate the system with radiologists.
 
 
 ## Citation
 
-If you're using DrugChat in your research or applications, please cite using this BibTeX:
+If you're using XrayChat in your research or applications, please cite using this BibTeX:
 ```bibtex
-@article{liang2023drugchat,
-  title={DrugChat: Towards Enabling ChatGPT-Like Capabilities on Drug Molecule Graphs},
-  author={Liang, Youwei and Zhang, Ruiyi and Zhang, li and Xie, Pengtao},
+@article{liang2023xraychat,
+  title={XrayChat: Towards Enabling ChatGPT-Like Capabilities on Chest X-ray Images},
+  author={Liang, Youwei and Guo, Han and Xie, Pengtao},
   year={2023}
 }
