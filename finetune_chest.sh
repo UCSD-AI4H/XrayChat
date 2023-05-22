@@ -1,0 +1,1 @@
+torchrun --nproc_per_node 1 --master_port 34908 train.py --cfg-path train_configs/minigpt4_stage2_finetune.yaml
