@@ -16,10 +16,20 @@ This repository holds the code and data of XrayChat: Towards Enabling ChatGPT-Li
 
 ## Datasets
 
-The file `data/ChEMBL_QA.json` and `data/PubChem_QA.json` contains data for the Open-i Instruction Tuning Dataset. The data structure is as follows. 
+The file `chest_data/filter_cap.json` contains data for the Open-i Instruction Tuning Dataset. The data structure is as follows. 
 
-{SMILES String: [ [Question1 , Answer1], [Question2 , Answer2]... ] }
+{"annotations": [{"image_id": "CXR2017_IM-example_id", "caption": "example_caption"}, ...]}
 
+The images can be downloaded from this [link](https://openi.nlm.nih.gov/imgs/collections/NLMCXR_png.tgz) and unzip to `chest_data/image`. Then we have the following folder structure for the data:
+
+```
+chest_data
+├── filter_cap.json
+├── image
+    ├── CXR1_1_IM-0001-3001.png
+    ├── CXR1_1_IM-0001-4001.png
+    ...
+```
 
 ## Getting Started
 ### Installation
@@ -30,21 +40,18 @@ These instructions largely follow those in MiniGPT-4.
 Git clone our repository, creating a python environment and ativate it via the following command
 
 ```bash
-git clone https://github.com/UCSD-AI4H/drugchat
-cd drugchat
+git clone https://github.com/UCSD-AI4H/XrayChat
+cd XrayChat
 conda env create -f environment.yml
-conda activate drugchat
+conda activate XrayChat
 ```
 
-Verify the installation of `torch` and `torchvision` is successful by running `python -c "import torchvision; print(torchvision.__version__)"`. If it outputs the version number without any warnings or errors, then you can go to the next step (installing PyTorch Geometric). __If it outputs any warnings or errors__, try to uninstall `torch` by `conda uninstall pytorch torchvision torchaudio cudatoolkit` and then reinstall them following [here](https://pytorch.org/get-started/previous-versions/#v1121). You need to find the correct command according to the CUDA version your GPU driver supports (check `nvidia-smi`). For example, I found my GPU driver supported CUDA 11.6, so I run `conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.6 -c pytorch -c conda-forge`.
-
-### Installing PyTorch Geometric
-Run `conda install pyg=2.3.0 pytorch-scatter=2.1.0 -c pyg` to install PyTorch Geometric. If some error related to PyTorch Geometric or pytorch-scatter show up later when running the code, try to follow [here](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html) to reinstall them. 
+Verify the installation of `torch` and `torchvision` is successful by running `python -c "import torchvision; print(torchvision.__version__)"`. If it outputs the version number without any warnings or errors, then you can go to the next step (Prepare the pretrained Vicuna weights). __If it outputs any warnings or errors__, try to uninstall `torch` by `conda uninstall pytorch torchvision torchaudio cudatoolkit` and then reinstall them following [here](https://pytorch.org/get-started/previous-versions/#v1121). You need to find the correct command according to the CUDA version your GPU driver supports (check `nvidia-smi`). For example, I found my GPU driver supported CUDA 11.6, so I run `conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.6 -c pytorch -c conda-forge`.
 
 
 **2. Prepare the pretrained Vicuna weights**
 
-The current version of DrugChat is built on the v0 versoin of Vicuna-13B.
+The current version of XrayChat is built on the v0 versoin of Vicuna-13B.
 Please refer to our instruction [here](PrepareVicuna.md) 
 to prepare the Vicuna weights.
 The final weights would be in a single folder in a structure similar to the following:
@@ -59,32 +66,22 @@ vicuna_weights
 ```
 
 Then, set the path to the vicuna weight in the model config file 
-[here](pipeline/configs/models/drugchat.yaml#L16) at Line 16.
+[here](minigpt4/configs/models/minigpt4.yaml#L16) at Line 16.
 
 ### Training
 **You need roughly 40 GB GPU memory for the training.** 
 
-The training configuration file is [train_configs/drugchat_stage2_finetune.yaml](train_configs/drugchat_stage2_finetune.yaml). You may want to change the number of epochs and other hyper-parameters there, such as `max_epoch`, `init_lr`, `min_lr`,`warmup_steps`, `batch_size_train`. You need to adjust `iters_per_epoch` so that `iters_per_epoch` * `batch_size_train` = your training set size.
+The training configuration file is [train_configs/minigpt4_stage2_finetune.yaml](train_configs/minigpt4_stage2_finetune.yaml). You may want to change the number of epochs and other hyper-parameters there, such as `max_epoch`, `init_lr`, `min_lr`,`warmup_steps`, `batch_size_train`. You need to adjust `iters_per_epoch` so that `iters_per_epoch` * `batch_size_train` = your training set size.
 
-Start training the projection layer that connects the GNN output and the LLaMA model by running `bash finetune_gnn.sh`. 
+Start training the projection layer that connects the ViT encoder and the LLaMA model by running `bash finetune_chest.sh`. 
 
 ### Inference by Launching Demo Locally
-**To get the inference to work properly, you need to create another environment (`rdkit`) and launch a backend process which converts SMILES strings to Torch Geometric graphs.**
 
 **It takes around 24 GB GPU memory for the demo.**
 
-To create the `rdkit` environment and run the process, run
-```
-conda create -c conda-forge -n rdkit rdkit
-conda activate rdkit
-pip install numpy
-python dataset/smiles2graph_demo.py
-```
-Then, the `smiles2graph_demo.py` will be running in the backend to serve the `demo.py`.
+Find the checkpoint you save in the training process above, which is located under the folder `minigpt4/output/minigpt4_stage2_finetune/` by default. Put the path of the checkpoint in [eval_configs/minigpt4_eval.yaml](eval_configs/minigpt4_eval.yaml#L11)
 
-Find the checkpoint you save in the training process above, which is located under the folder `pipeline/output/pipeline_stage2_finetune/` by default. Copy it to the folder `ckpt` by running `cp pipeline/output/pipeline_stage2_finetune/the_remaining_path ckpt/with_gnn_node_feat.pth`. 
-
-Now we launch the `demo.py` in our original environment. Make sure you have run `conda activate drugchat`. Then, start the demo [demo.sh](demo.sh) on your local machine by running `bash demo.sh`. Then, open the URL created by the demo and try it out!
+Start the demo [demo.sh](demo.sh) on your local machine by running `bash demo.sh`. Then, open the URL created by the demo and try it out!
 
 
 ## Acknowledgement
