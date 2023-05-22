@@ -12,7 +12,7 @@ This repository holds the code and data of XrayChat: Towards Enabling ChatGPT-Li
 - To train XrayChat, we collected   instruction tuning datasets which contain about 400K chest X-ray images and instructions, from [Open-i](https://openi.nlm.nih.gov/faq#collection) and [MIMIC CXR](https://physionet.org/content/mimic-cxr/2.0.0/)
 
 
-![overview](figs/DrugChat.png)
+![overview](figs/xraychat_overview.png)
 
 ## Datasets
 
