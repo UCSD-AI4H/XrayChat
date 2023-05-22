@@ -4,10 +4,6 @@ This repository holds the code and data of XrayChat: Towards Enabling ChatGPT-Li
 
 ## Technical report will be available soon. 
 
-!## Examples
-
-![demo1](figs/examples/demo.png) 
-
 
 ## Introduction
 - In this work, we make an initial attempt towards enabling ChatGPT-like capabilities on chest X-ray images, by developing a prototype system XrayChat.
