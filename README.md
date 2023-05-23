@@ -73,6 +73,12 @@ Then, set the path to the vicuna weight in the model config file
 
 The training configuration file is [train_configs/minigpt4_stage2_finetune.yaml](train_configs/minigpt4_stage2_finetune.yaml). You may want to change the number of epochs and other hyper-parameters there, such as `max_epoch`, `init_lr`, `min_lr`,`warmup_steps`, `batch_size_train`. You need to adjust `iters_per_epoch` so that `iters_per_epoch` * `batch_size_train` = your training set size.
 
+To avoid training from scratch, we recommend using the pretrained [MiniGPT-4](https://github.com/Vision-CAIR/MiniGPT-4) checkpoint for initialization. You can download the pretrained checkpoints according to the Vicuna model you prepare: [Checkpoint Aligned with Vicuna 13B](https://drive.google.com/file/d/1a4zLvaiDBr-36pasffmgpvH5P7CKmpze/view?usp=share_link), [Checkpoint Aligned with Vicuna 7B](https://drive.google.com/file/d/1RY9jV0dyqLX-o38LrumkKRh6Jtaop58R/view?usp=sharing).
+
+
+For initialization, set the path to the pretrained checkpoint in the finetune config file 
+in [train_configs/minigpt4_stage2_finetune.yaml](train_configs/minigpt4_stage2_finetune.yaml#L10) at Line 10. 
+
 Start training the projection layer that connects the ViT encoder and the LLaMA model by running `bash finetune_chest.sh`. 
 
 ### Inference by Launching Demo Locally
